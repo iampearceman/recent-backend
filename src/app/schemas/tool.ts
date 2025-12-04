@@ -136,6 +136,47 @@ export const ToolListQuerySchema = z.object({
 	sortOrder: z.enum(['asc', 'desc']).default('asc'),
 })
 
+// --- Public API Input/Output Schemas ---
+// These schemas are the single source of truth for the public API
+
+/**
+ * Input schema for listing tools
+ * Used to validate query parameters for the list endpoint
+ */
+export const listToolsInputSchema = z.object({
+	limit: z.number().int().positive().max(100).optional(),
+	offset: z.number().int().nonnegative().optional(),
+	search: z.string().min(1).max(100).optional(),
+})
+
+export type ListToolsInput = z.infer<typeof listToolsInputSchema>
+
+/**
+ * Tool schema for public API responses
+ * Represents a tool DTO in API responses
+ */
+export const toolSchema = z.object({
+	id: z.string(),
+	name: z.string(),
+	slug: z.string(),
+	description: z.string().nullable().optional(),
+	logoUrl: z.string().url().nullable().optional(),
+	website: z.string().url().nullable().optional(),
+	category: z.string().nullable().optional(),
+})
+
+export type ToolDTO = z.infer<typeof toolSchema>
+
+/**
+ * Output schema for listing tools
+ * Wraps the tools array for consistent API responses
+ */
+export const listToolsOutputSchema = z.object({
+	tools: z.array(toolSchema),
+})
+
+export type ListToolsOutput = z.infer<typeof listToolsOutputSchema>
+
 export type ToolListQuery = z.infer<typeof ToolListQuerySchema>
 
 // --- Tool Response Schemas ---
