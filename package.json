@@ -17,13 +17,14 @@
 	"dependencies": {
 		"@neondatabase/serverless": "^1.0.2",
 		"@trpc/server": "^11.7.2",
-		"drizzle-orm": "^0.45.0",
 		"hono": "^4.10.7",
 		"zod": "^4.1.13"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.3.8",
 		"@cloudflare/workers-types": "^4.20251202.0",
+		"better-sqlite3": "^12.5.0",
+		"drizzle-orm": "^0.45.0",
 		"tsx": "^4.21.0",
 		"typescript": "^5.9.3",
 		"vitest": "^4.0.15",

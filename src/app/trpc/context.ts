@@ -40,7 +40,10 @@ export function createContext(opts: FetchCreateContextFnOptions): TRPCContext {
 		db = getDb(env)
 	} catch (error) {
 		// Database is optional - log warning but continue
-		console.warn('Database client not initialized:', error instanceof Error ? error.message : 'Unknown error')
+		console.warn(
+			'Database client not initialized:',
+			error instanceof Error ? error.message : 'Unknown error',
+		)
 	}
 
 	// User will be populated by Clerk authentication middleware later
