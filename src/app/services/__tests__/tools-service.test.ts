@@ -5,8 +5,8 @@
 
 import { describe, expect, it, vi } from 'vitest'
 import { DomainError } from '../../../core/shared/errors'
-import { BackfillStatus, ToolStatus, ToolSyncStatus } from '../../../core/tools/model'
 import type { Tool } from '../../../core/tools/model'
+import { BackfillStatus, ToolStatus, ToolSyncStatus } from '../../../core/tools/model'
 import type { ToolsRepository } from '../../../core/tools/repository'
 import { ToolsService } from '../tools-service'
 
@@ -44,9 +44,7 @@ function createMockTool(overrides: Partial<Tool> = {}): Tool {
 	}
 }
 
-function createMockRepository(
-	overrides: Partial<ToolsRepository> = {},
-): ToolsRepository {
+function createMockRepository(overrides: Partial<ToolsRepository> = {}): ToolsRepository {
 	return {
 		listTools: vi.fn().mockResolvedValue([]),
 		...overrides,
@@ -76,19 +74,15 @@ describe('ToolsService', () => {
 			expect(result.tools[0]).toEqual({
 				id: '1',
 				name: 'Tool One',
+				slug: 'tool-one',
 				description: 'A test tool',
-				website: 'https://example.com',
 				logoUrl: 'https://example.com/logo.png',
+				website: 'https://example.com',
 				category: 'testing',
-				currentVersion: '1.0.0',
-				isActive: true,
-				status: 'active',
-				syncStatus: 'synced',
-				lastSyncAt: '2025-12-01T10:00:00.000Z',
-				createdAt: '2025-01-01T00:00:00.000Z',
 			})
 			expect(result.tools[1].id).toBe('2')
 			expect(result.tools[1].name).toBe('Tool Two')
+			expect(result.tools[1].slug).toBe('tool-two')
 		})
 
 		it('should pass filters correctly to repository', async () => {
@@ -185,16 +179,11 @@ describe('ToolsService', () => {
 			expect(result.tools[0]).toEqual({
 				id: 'sparse-tool',
 				name: 'Sparse Tool',
+				slug: 'sparse-tool',
 				description: null,
-				website: null,
 				logoUrl: null,
+				website: null,
 				category: null,
-				currentVersion: null,
-				isActive: true,
-				status: 'active',
-				syncStatus: 'synced',
-				lastSyncAt: null,
-				createdAt: '2025-01-01T00:00:00.000Z',
 			})
 		})
 	})

@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { publicProcedure, router } from '../trpc/init'
+import { toolsRouter } from './tools-router'
 
 /**
  * Root tRPC router
@@ -24,8 +25,12 @@ export const appRouter = router({
 			}
 		}),
 
+	/**
+	 * Tools router - handles tool CRUD operations
+	 */
+	tools: toolsRouter,
+
 	// Future routers will be merged here:
-	// tools: toolsRouter,
 	// changelog: changelogRouter,
 	// sync: syncRouter,
 })

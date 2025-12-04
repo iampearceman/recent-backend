@@ -7,9 +7,9 @@
  * ✅ All parameters and return types are serializable
  */
 
-import type { ToolsRepository, ListToolsInput } from '../../core/tools/repository'
 import type { Tool } from '../../core/tools/model'
-import type { ToolListItem } from '../schemas/tool'
+import type { ListToolsInput, ToolsRepository } from '../../core/tools/repository'
+import type { ToolDTO } from '../schemas/tool'
 
 // --- Service Input Types (DTO-shaped) ---
 
@@ -22,25 +22,32 @@ export interface GetToolsListInput {
 // --- Service Output Types (DTO-shaped) ---
 
 export interface GetToolsListOutput {
-	tools: ToolListItem[]
+	tools: ToolDTO[]
+}
+
+// --- Utility Functions ---
+
+/**
+ * Generate a URL-safe slug from a name
+ */
+function generateSlug(name: string): string {
+	return name
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/g, '-')
+		.replace(/^-|-$/g, '')
 }
 
 // --- Domain to DTO Mapper ---
 
-function mapToolToListItem(tool: Tool): ToolListItem {
+function mapToolToDTO(tool: Tool): ToolDTO {
 	return {
 		id: tool.id,
 		name: tool.name,
+		slug: generateSlug(tool.name),
 		description: tool.description ?? null,
-		website: tool.website ?? null,
 		logoUrl: tool.logoUrl ?? null,
+		website: tool.website ?? null,
 		category: tool.category ?? null,
-		currentVersion: tool.currentVersion ?? null,
-		isActive: tool.isActive,
-		status: tool.status,
-		syncStatus: tool.syncStatus,
-		lastSyncAt: tool.lastSyncAt?.toISOString() ?? null,
-		createdAt: tool.createdAt.toISOString(),
 	}
 }
 
@@ -59,7 +66,7 @@ export class ToolsService {
 		const tools = await this.repo.listTools(repoInput)
 
 		return {
-			tools: tools.map(mapToolToListItem),
+			tools: tools.map(mapToolToDTO),
 		}
 	}
 }

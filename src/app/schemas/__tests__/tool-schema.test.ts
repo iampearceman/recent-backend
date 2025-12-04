@@ -4,11 +4,7 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import {
-	listToolsInputSchema,
-	listToolsOutputSchema,
-	toolSchema,
-} from '../tool'
+import { listToolsInputSchema, listToolsOutputSchema, toolSchema } from '../tool'
 
 describe('listToolsInputSchema', () => {
 	describe('accepts valid input', () => {

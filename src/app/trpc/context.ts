@@ -3,6 +3,16 @@ import type { AppConfig } from '../../config/config'
 import { createConfig } from '../../config/config'
 import type { DbClient } from '../../infra/db'
 import { getDb } from '../../infra/db'
+import { DrizzleToolsRepository } from '../../infra/db/tools-repository.drizzle'
+import { ToolsService } from '../services/tools-service'
+
+/**
+ * Services container
+ * All application services accessible from tRPC context
+ */
+export interface Services {
+	tools: ToolsService
+}
 
 /**
  * tRPC context shape
@@ -18,6 +28,8 @@ export interface TRPCContext {
 		id: string
 		email?: string
 	} | null
+	/** Application services */
+	services: Services
 }
 
 /**
@@ -50,11 +62,30 @@ export function createContext(opts: FetchCreateContextFnOptions): TRPCContext {
 	// For now, it's always null (unauthenticated)
 	const user = null
 
+	// Initialize services
+	// Note: Services require DB, so they may throw if DB is not configured
+	const toolsRepository = db ? new DrizzleToolsRepository(db) : null
+	const services: Services = {
+		tools: toolsRepository ? new ToolsService(toolsRepository) : createNoOpToolsService(),
+	}
+
 	return {
 		db,
 		config,
 		user,
+		services,
 	}
+}
+
+/**
+ * Creates a no-op ToolsService for when DB is not available
+ * This allows the app to start without a database connection
+ */
+function createNoOpToolsService(): ToolsService {
+	const noOpRepository = {
+		listTools: async () => [],
+	}
+	return new ToolsService(noOpRepository)
 }
 
 /**
