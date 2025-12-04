@@ -1,11 +1,28 @@
 {
-  "root": true,
-  "formatter": true,
-  "lint": {
-    "enabled": true
-  },
-  "rules": {
-    "quotes": ["error", "single"],
-    "semi": ["error", "always"]
-  }
+	"$schema": "https://biomejs.dev/schemas/2.3.8/schema.json",
+	"vcs": {
+		"enabled": true,
+		"clientKind": "git",
+		"useIgnoreFile": true
+	},
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "tab",
+		"lineWidth": 100
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"suspicious": {
+				"noExplicitAny": "off"
+			}
+		}
+	},
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "single",
+			"semicolons": "asNeeded"
+		}
+	}
 }
