@@ -1,0 +1,6 @@
+{
+  // Wrangler configuration for a single module worker
+  "name": "recent-backend",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-12-04"
+}
