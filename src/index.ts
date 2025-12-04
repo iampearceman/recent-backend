@@ -1,9 +1,12 @@
 import type { Context } from 'hono'
 import { Hono } from 'hono'
 import { ZodError } from 'zod'
+import { appRouter } from './app/routes/root-router'
 import { createErrorResponse } from './app/schemas/error-schema'
+import { createContext } from './app/trpc/context'
 import { createConfig, type Env } from './config/config'
 import { InternalError, isDomainError } from './core/shared/errors'
+import { createTRPCHandler } from './infra/http/trpc-adapter'
 
 const app = new Hono<{ Bindings: Env }>()
 
@@ -53,6 +56,17 @@ app.onError((err, c: Context) => {
 	)
 })
 
+// REST health endpoint
 app.get('/health', (c) => c.json({ status: 'ok' }))
+
+// tRPC handler - handles all /trpc/* requests
+app.all(
+	'/trpc/*',
+	createTRPCHandler({
+		router: appRouter,
+		createContext,
+		endpoint: '/trpc',
+	}),
+)
 
 export default app
