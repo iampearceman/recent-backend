@@ -1,7 +1,26 @@
 import { relations } from 'drizzle-orm'
-import { boolean, index, integer, json, pgEnum, pgTable, text, timestamp, unique, varchar } from 'drizzle-orm/pg-core'
+import {
+	boolean,
+	index,
+	integer,
+	json,
+	pgEnum,
+	pgTable,
+	text,
+	timestamp,
+	unique,
+	varchar,
+} from 'drizzle-orm/pg-core'
 import type { ExtractionConfig } from '../sync-engine/schemas/types'
-import { generateAuditLogId, generateCommentId, generateReactionId, generateSettingsId, generateSyncLogId, generateUserId, generateUserToolSubscriptionId } from '../utils/id-generator'
+import {
+	generateAuditLogId,
+	generateCommentId,
+	generateReactionId,
+	generateSettingsId,
+	generateSyncLogId,
+	generateUserId,
+	generateUserToolSubscriptionId,
+} from '../utils/id-generator'
 
 // ID generators for new tables
 function generateExtractionPatternId(): string {
@@ -456,7 +475,7 @@ export const extractionLogs = pgTable(
 
 // --- Relations ---
 
-export const usersRelations = relations(users, ({ many }) => ({
+export const usersRelations = relations(users as any, ({ many }) => ({
 	toolSubscriptions: many(userToolSubscriptions),
 	reactions: many(reactions),
 	comments: many(comments),
@@ -464,7 +483,7 @@ export const usersRelations = relations(users, ({ many }) => ({
 	targetAuditLogs: many(auditLogs, { relationName: 'target_audit_logs' }),
 }))
 
-export const toolsRelations = relations(tools, ({ one, many }) => ({
+export const toolsRelations = relations(tools as any, ({ one, many }) => ({
 	changelogItems: many(changelogItems),
 	userSubscriptions: many(userToolSubscriptions),
 	syncLogs: many(syncLogs),
@@ -475,7 +494,7 @@ export const toolsRelations = relations(tools, ({ one, many }) => ({
 	}),
 }))
 
-export const changelogItemsRelations = relations(changelogItems, ({ one, many }) => ({
+export const changelogItemsRelations = relations(changelogItems as any, ({ one, many }) => ({
 	tool: one(tools, {
 		fields: [changelogItems.tool_id],
 		references: [tools.id],
@@ -484,7 +503,7 @@ export const changelogItemsRelations = relations(changelogItems, ({ one, many })
 	comments: many(comments),
 }))
 
-export const reactionsRelations = relations(reactions, ({ one }) => ({
+export const reactionsRelations = relations(reactions as any, ({ one }) => ({
 	user: one(users, { fields: [reactions.user_id], references: [users.id] }),
 	changelogItem: one(changelogItems, {
 		fields: [reactions.changelog_item_id],
@@ -492,7 +511,7 @@ export const reactionsRelations = relations(reactions, ({ one }) => ({
 	}),
 }))
 
-export const commentsRelations = relations(comments, ({ one }) => ({
+export const commentsRelations = relations(comments as any, ({ one }) => ({
 	user: one(users, { fields: [comments.user_id], references: [users.id] }),
 	changelogItem: one(changelogItems, {
 		fields: [comments.changelog_item_id],
@@ -500,25 +519,28 @@ export const commentsRelations = relations(comments, ({ one }) => ({
 	}),
 }))
 
-export const syncLogsRelations = relations(syncLogs, ({ one }) => ({
+export const syncLogsRelations = relations(syncLogs as any, ({ one }) => ({
 	tool: one(tools, {
 		fields: [syncLogs.tool_id],
 		references: [tools.id],
 	}),
 }))
 
-export const userToolSubscriptionsRelations = relations(userToolSubscriptions, ({ one }) => ({
-	user: one(users, {
-		fields: [userToolSubscriptions.user_id],
-		references: [users.id],
+export const userToolSubscriptionsRelations = relations(
+	userToolSubscriptions as any,
+	({ one }) => ({
+		user: one(users, {
+			fields: [userToolSubscriptions.user_id],
+			references: [users.id],
+		}),
+		tool: one(tools, {
+			fields: [userToolSubscriptions.tool_id],
+			references: [tools.id],
+		}),
 	}),
-	tool: one(tools, {
-		fields: [userToolSubscriptions.tool_id],
-		references: [tools.id],
-	}),
-}))
+)
 
-export const auditLogsRelations = relations(auditLogs, ({ one }) => ({
+export const auditLogsRelations = relations(auditLogs as any, ({ one }) => ({
 	adminUser: one(users, {
 		fields: [auditLogs.admin_user_id],
 		references: [users.id],
@@ -531,11 +553,11 @@ export const auditLogsRelations = relations(auditLogs, ({ one }) => ({
 	}),
 }))
 
-export const extractionPatternsRelations = relations(extractionPatterns, ({ many }) => ({
+export const extractionPatternsRelations = relations(extractionPatterns as any, ({ many }) => ({
 	tools: many(tools),
 }))
 
-export const extractionLogsRelations = relations(extractionLogs, ({ one }) => ({
+export const extractionLogsRelations = relations(extractionLogs as any, ({ one }) => ({
 	tool: one(tools, {
 		fields: [extractionLogs.tool_id],
 		references: [tools.id],

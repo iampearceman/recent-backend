@@ -5,7 +5,15 @@
 
 import { describe, expect, it } from 'vitest'
 import { DomainError } from '../../shared/errors'
-import { BackfillStatus, mapToolRowToDomain, StrategyType, ToolStatus, ToolSyncStatus, type DbToolRow, type Tool } from '../model'
+import {
+	BackfillStatus,
+	mapToolRowToDomain,
+	StrategyType,
+	ToolStatus,
+	ToolSyncStatus,
+	type DbToolRow,
+	type Tool,
+} from '../model'
 
 describe('Tool Domain Model', () => {
 	describe('mapToolRowToDomain', () => {

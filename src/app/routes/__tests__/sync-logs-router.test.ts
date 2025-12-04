@@ -1,7 +1,12 @@
 import { initTRPC } from '@trpc/server'
 import { describe, expect, it, vi } from 'vitest'
 import type { SyncLogsByToolInput } from '../../schemas/sync-logs'
-import { RecentFailuresInputSchema, RecentFailuresOutputSchema, SyncLogsByToolInputSchema, SyncLogsByToolOutputSchema } from '../../schemas/sync-logs'
+import {
+	RecentFailuresInputSchema,
+	RecentFailuresOutputSchema,
+	SyncLogsByToolInputSchema,
+	SyncLogsByToolOutputSchema,
+} from '../../schemas/sync-logs'
 
 const t = initTRPC.context<{ services: { syncLogs: any } }>().create()
 

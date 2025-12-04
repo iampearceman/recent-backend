@@ -14,7 +14,10 @@ export class DrizzleToolsRepository implements ToolsRepository {
 
 	async listTools({ limit = DEFAULT_LIMIT, offset = 0, search }: ListToolsInput): Promise<Tool[]> {
 		try {
-			let query: any = this.db.select().from(tools).orderBy(desc(tools.created_at))
+			let query: any = this.db
+				.select()
+				.from(tools as any)
+				.orderBy(desc(tools.created_at))
 
 			if (search) {
 				// Note: Schema does not have a 'slug' field, searching on 'name' only.

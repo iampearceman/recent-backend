@@ -1,6 +1,10 @@
 import { desc, eq } from 'drizzle-orm'
 import type { DbSyncLogRow, SyncFailure, SyncLog } from '../../core/sync-logs/model'
-import type { ListRecentFailuresInput, ListSyncLogsByToolInput, SyncLogsRepository } from '../../core/sync-logs/repository'
+import type {
+	ListRecentFailuresInput,
+	ListSyncLogsByToolInput,
+	SyncLogsRepository,
+} from '../../core/sync-logs/repository'
 import { SyncLogsRepositoryError } from '../../core/sync-logs/repository'
 import type { DbClient } from './client'
 import { syncLogs } from './schema'
@@ -48,13 +52,13 @@ export class DrizzleSyncLogsRepository implements SyncLogsRepository {
 		try {
 			const rows = await this.db
 				.select()
-				.from(syncLogs)
+				.from(syncLogs as any)
 				.where(eq(syncLogs.tool_id, toolId))
 				.orderBy(desc(syncLogs.created_at))
 				.limit(limit)
 				.offset(offset)
 
-			return rows.map(mapRowToSyncLog)
+			return (rows as DbSyncLogRow[]).map(mapRowToSyncLog)
 		} catch (error) {
 			throw new SyncLogsRepositoryError('Failed to list sync logs by tool', error)
 		}
@@ -66,12 +70,12 @@ export class DrizzleSyncLogsRepository implements SyncLogsRepository {
 		try {
 			const rows = await this.db
 				.select()
-				.from(syncLogs)
+				.from(syncLogs as any)
 				.where(eq(syncLogs.status, 'error'))
 				.orderBy(desc(syncLogs.created_at))
 				.limit(limit)
 
-			return rows.map(mapRowToFailure)
+			return (rows as DbSyncLogRow[]).map(mapRowToFailure)
 		} catch (error) {
 			throw new SyncLogsRepositoryError('Failed to list recent failures', error)
 		}
@@ -99,7 +103,10 @@ export class DrizzleSyncLogsRepository implements SyncLogsRepository {
 			// Try to insert and return the created row mapped to domain shape.
 			// The exact return shape depends on the DB adapter; handle both returned row and fallback.
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			const inserted = await (this.db as any).insert(syncLogs).values(row).returning()
+			const inserted = await (this.db as any)
+				.insert(syncLogs as any)
+				.values(row)
+				.returning()
 			if (Array.isArray(inserted) && inserted.length > 0) {
 				return mapRowToSyncLog(inserted[0] as DbSyncLogRow)
 			}

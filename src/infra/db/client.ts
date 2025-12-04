@@ -17,7 +17,7 @@ export function createDb(config: AppConfig) {
 	const sql = neon(config.database.url)
 
 	// Create and return Drizzle client with schema
-	return drizzle(sql, { schema })
+	return drizzle(sql, { schema: schema as any })
 }
 
 export type DbClient = ReturnType<typeof createDb>

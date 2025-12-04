@@ -30,7 +30,7 @@ export class DrizzleChangelogRepository implements ChangelogRepository {
 		try {
 			const rows = await this.db
 				.select()
-				.from(changelogItems)
+				.from(changelogItems as any)
 				.where(eq(changelogItems.tool_id, toolId))
 				.orderBy(desc(changelogItems.published_at))
 				.limit(limit)
