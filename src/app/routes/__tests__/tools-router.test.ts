@@ -45,6 +45,10 @@ function createMockContext(mockToolsService: Partial<ToolsService>): TRPCContext
 			changelog: {
 				listChangelogByTool: async () => [],
 			} as any,
+			syncLogs: {
+				listByTool: async () => ({ logs: [], nextCursor: undefined }),
+				listRecentFailures: async () => ({ failures: [] }),
+			} as any,
 		},
 	}
 }

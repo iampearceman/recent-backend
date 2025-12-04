@@ -25,5 +25,6 @@ export * from './error-schema'
 
 // --- Sync Schemas ---
 export * from './sync'
+export * from './sync-logs'
 // --- Tool Schemas ---
 export * from './tool'

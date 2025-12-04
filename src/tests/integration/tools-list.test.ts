@@ -178,6 +178,10 @@ function createTestContext(db: DbClient, config: AppConfig): TRPCContext {
 		changelog: {
 			listChangelogByTool: async () => [],
 		} as any,
+		syncLogs: {
+			listByTool: async () => [],
+			listRecentFailures: async () => [],
+		} as any,
 	}
 
 	return {
