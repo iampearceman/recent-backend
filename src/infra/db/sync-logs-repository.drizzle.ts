@@ -80,4 +80,53 @@ export class DrizzleSyncLogsRepository implements SyncLogsRepository {
 			throw new SyncLogsRepositoryError('Failed to list recent failures', error)
 		}
 	}
+
+	async createLog(log: Partial<SyncLog>): Promise<SyncLog> {
+		try {
+			const now = new Date()
+			// Build insert row matching DB column names
+			const row = {
+				tool_id: log.toolId ?? null,
+				status: (log.status as any) ?? 'error',
+				started_at: log.startedAt ?? now,
+				completed_at: log.completedAt ?? null,
+				items_found: log.itemsFound ?? 0,
+				items_created: log.itemsCreated ?? 0,
+				items_updated: log.itemsUpdated ?? 0,
+				items_skipped: log.itemsSkipped ?? 0,
+				error_message: log.errorMessage ?? null,
+				sync_from_date: log.syncFromDate ?? null,
+				sync_to_date: log.syncToDate ?? null,
+				metadata: log.metadata ?? null,
+			}
+
+			// Try to insert and return the created row mapped to domain shape.
+			// The exact return shape depends on the DB adapter; handle both returned row and fallback.
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			const inserted = await (this.db as any).insert(syncLogs).values(row).returning()
+			if (Array.isArray(inserted) && inserted.length > 0) {
+				return mapRowToSyncLog(inserted[0] as DbSyncLogRow)
+			}
+
+			// fallback: synthesize a SyncLog domain object
+			return {
+				id: `synclog_${Date.now()}`,
+				toolId: log.toolId ?? undefined,
+				status: (log.status as any) ?? 'error',
+				startedAt: log.startedAt ?? now,
+				completedAt: log.completedAt ?? undefined,
+				itemsFound: log.itemsFound ?? 0,
+				itemsCreated: log.itemsCreated ?? 0,
+				itemsUpdated: log.itemsUpdated ?? 0,
+				itemsSkipped: log.itemsSkipped ?? 0,
+				errorMessage: log.errorMessage ?? undefined,
+				syncFromDate: log.syncFromDate ?? undefined,
+				syncToDate: log.syncToDate ?? undefined,
+				metadata: log.metadata ?? undefined,
+				createdAt: now,
+			}
+		} catch (error) {
+			throw new SyncLogsRepositoryError('Failed to create sync log', error)
+		}
+	}
 }

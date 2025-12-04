@@ -26,4 +26,6 @@ export class SyncLogsRepositoryError extends DomainError {
 export interface SyncLogsRepository {
 	listByTool(input: ListSyncLogsByToolInput): Promise<SyncLog[]>
 	listRecentFailures(input?: ListRecentFailuresInput): Promise<SyncFailure[]>
+	// Create a new sync log record. Implementations should return the created SyncLog.
+	createLog(log: Partial<SyncLog>): Promise<SyncLog>
 }
