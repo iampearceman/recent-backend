@@ -4,11 +4,11 @@ import { createConfig } from '../../config/config'
 import type { DbClient } from '../../infra/db'
 import { getDb } from '../../infra/db'
 import { DrizzleChangelogRepository } from '../../infra/db/changelog-repository.drizzle'
-import { DrizzleToolsRepository } from '../../infra/db/tools-repository.drizzle'
 import { DrizzleSyncLogsRepository } from '../../infra/db/sync-logs-repository.drizzle'
+import { DrizzleToolsRepository } from '../../infra/db/tools-repository.drizzle'
 import { ChangelogService } from '../services/changelog-service'
-import { ToolsService } from '../services/tools-service'
 import { SyncLogsService } from '../services/sync-logs-service'
+import { ToolsService } from '../services/tools-service'
 
 /**
  * Services container
@@ -77,7 +77,9 @@ export function createContext(opts: FetchCreateContextFnOptions): TRPCContext {
 		changelog: changelogRepository
 			? new ChangelogService(changelogRepository)
 			: createNoOpChangelogService(),
-		syncLogs: db ? new SyncLogsService(new DrizzleSyncLogsRepository(db)) : createNoOpSyncLogsService(),
+		syncLogs: db
+			? new SyncLogsService(new DrizzleSyncLogsRepository(db))
+			: createNoOpSyncLogsService(),
 	}
 
 	return {
