@@ -9,6 +9,8 @@
 		"start": "wrangler dev",
 		"lint": "biome check .",
 		"format": "biome format .",
+		"test": "vitest",
+		"test:unit": "vitest run",
 		"test:db": "tsx src/infra/db/__tests__/client.test.ts"
 	},
 	"packageManager": "pnpm@10.13.1",
@@ -24,6 +26,7 @@
 		"@cloudflare/workers-types": "^4.20251202.0",
 		"tsx": "^4.21.0",
 		"typescript": "^5.9.3",
+		"vitest": "^4.0.15",
 		"wrangler": "^4.52.1"
 	}
 }
