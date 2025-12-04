@@ -74,6 +74,20 @@ export const ChangelogListItemSchema = z.object({
 
 export type ChangelogListItem = z.infer<typeof ChangelogListItemSchema>
 
+// --- Changelog by Tool (cursor pagination) ---
+export const ChangelogByToolInputSchema = z.object({
+	toolId: z.string(),
+	limit: z.number().int().min(1).max(100).default(20),
+	cursor: z.string().optional(),
+})
+export type ChangelogByToolInput = z.infer<typeof ChangelogByToolInputSchema>
+
+export const ChangelogByToolOutputSchema = z.object({
+	entries: z.array(ChangelogListItemSchema),
+	nextCursor: z.string().optional(),
+})
+export type ChangelogByToolOutput = z.infer<typeof ChangelogByToolOutputSchema>
+
 // --- Changelog Create/Update Schemas ---
 
 export const CreateChangelogItemSchema = z.object({

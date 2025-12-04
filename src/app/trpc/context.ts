@@ -3,7 +3,9 @@ import type { AppConfig } from '../../config/config'
 import { createConfig } from '../../config/config'
 import type { DbClient } from '../../infra/db'
 import { getDb } from '../../infra/db'
+import { DrizzleChangelogRepository } from '../../infra/db/changelog-repository.drizzle'
 import { DrizzleToolsRepository } from '../../infra/db/tools-repository.drizzle'
+import { ChangelogService } from '../services/changelog-service'
 import { ToolsService } from '../services/tools-service'
 
 /**
@@ -12,6 +14,7 @@ import { ToolsService } from '../services/tools-service'
  */
 export interface Services {
 	tools: ToolsService
+	changelog: ChangelogService
 }
 
 /**
@@ -65,8 +68,12 @@ export function createContext(opts: FetchCreateContextFnOptions): TRPCContext {
 	// Initialize services
 	// Note: Services require DB, so they may throw if DB is not configured
 	const toolsRepository = db ? new DrizzleToolsRepository(db) : null
+	const changelogRepository = db ? new DrizzleChangelogRepository(db) : null
 	const services: Services = {
 		tools: toolsRepository ? new ToolsService(toolsRepository) : createNoOpToolsService(),
+		changelog: changelogRepository
+			? new ChangelogService(changelogRepository)
+			: createNoOpChangelogService(),
 	}
 
 	return {
@@ -86,6 +93,13 @@ function createNoOpToolsService(): ToolsService {
 		listTools: async () => [],
 	}
 	return new ToolsService(noOpRepository)
+}
+
+function createNoOpChangelogService(): ChangelogService {
+	const noOpRepository = {
+		listChangelogByTool: async () => [],
+	}
+	return new ChangelogService(noOpRepository as any)
 }
 
 /**

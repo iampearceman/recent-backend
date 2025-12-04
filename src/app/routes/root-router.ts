@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { publicProcedure, router } from '../trpc/init'
+import { changelogRouter } from './changelog-router'
 import { toolsRouter } from './tools-router'
 
 /**
@@ -30,8 +31,10 @@ export const appRouter = router({
 	 */
 	tools: toolsRouter,
 
-	// Future routers will be merged here:
-	// changelog: changelogRouter,
+	/**
+	 * Changelog router - handles changelog queries
+	 */
+	changelog: changelogRouter,
 	// sync: syncRouter,
 })
 

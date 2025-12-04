@@ -175,6 +175,9 @@ function createTestContext(db: DbClient, config: AppConfig): TRPCContext {
 
 	const services: Services = {
 		tools: toolsService,
+		changelog: {
+			listChangelogByTool: async () => [],
+		} as any,
 	}
 
 	return {

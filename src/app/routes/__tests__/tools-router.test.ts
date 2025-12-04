@@ -42,6 +42,9 @@ function createMockContext(mockToolsService: Partial<ToolsService>): TRPCContext
 		user: null,
 		services: {
 			tools: mockToolsService as ToolsService,
+			changelog: {
+				listChangelogByTool: async () => [],
+			} as any,
 		},
 	}
 }
