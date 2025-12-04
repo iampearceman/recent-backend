@@ -24,5 +24,8 @@
 			"quoteStyle": "single",
 			"semicolons": "asNeeded"
 		}
+	},
+	"files": {
+		"ignoreUnknown": true
 	}
 }
