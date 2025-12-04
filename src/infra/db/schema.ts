@@ -1,26 +1,7 @@
 import { relations } from 'drizzle-orm'
-import {
-	boolean,
-	index,
-	integer,
-	json,
-	pgEnum,
-	pgTable,
-	text,
-	timestamp,
-	unique,
-	varchar,
-} from 'drizzle-orm/pg-core'
+import { boolean, index, integer, json, pgEnum, pgTable, text, timestamp, unique, varchar } from 'drizzle-orm/pg-core'
 import type { ExtractionConfig } from '../sync-engine/schemas/types'
-import {
-	generateAuditLogId,
-	generateCommentId,
-	generateReactionId,
-	generateSettingsId,
-	generateSyncLogId,
-	generateUserId,
-	generateUserToolSubscriptionId,
-} from '../utils/id-generator'
+import { generateAuditLogId, generateCommentId, generateReactionId, generateSettingsId, generateSyncLogId, generateUserId, generateUserToolSubscriptionId } from '../utils/id-generator'
 
 // ID generators for new tables
 function generateExtractionPatternId(): string {

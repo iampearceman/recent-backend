@@ -1,9 +1,4 @@
-import {
-	RecentFailuresInputSchema,
-	RecentFailuresOutputSchema,
-	SyncLogsByToolInputSchema,
-	SyncLogsByToolOutputSchema,
-} from '../schemas/sync-logs'
+import { RecentFailuresInputSchema, RecentFailuresOutputSchema, SyncLogsByToolInputSchema, SyncLogsByToolOutputSchema } from '../schemas/sync-logs'
 import { publicProcedure, router } from '../trpc/init'
 
 export const syncLogsRouter = router({

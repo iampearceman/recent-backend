@@ -9,6 +9,7 @@
 		"start": "wrangler dev",
 		"lint": "biome check .",
 		"format": "biome format .",
+		"sort:imports": "pnpm exec tsx scripts/sort-imports.ts",
 		"test": "vitest",
 		"test:unit": "vitest run",
 		"test:db": "tsx src/infra/db/__tests__/client.test.ts"

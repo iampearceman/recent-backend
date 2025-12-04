@@ -1,10 +1,6 @@
 import { desc, eq } from 'drizzle-orm'
 import type { DbSyncLogRow, SyncFailure, SyncLog } from '../../core/sync-logs/model'
-import type {
-	ListRecentFailuresInput,
-	ListSyncLogsByToolInput,
-	SyncLogsRepository,
-} from '../../core/sync-logs/repository'
+import type { ListRecentFailuresInput, ListSyncLogsByToolInput, SyncLogsRepository } from '../../core/sync-logs/repository'
 import { SyncLogsRepositoryError } from '../../core/sync-logs/repository'
 import type { DbClient } from './client'
 import { syncLogs } from './schema'

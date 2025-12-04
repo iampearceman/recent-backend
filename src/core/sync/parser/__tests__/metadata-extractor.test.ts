@@ -1,10 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import {
-	extractDateFromHtml,
-	extractMetaTags,
-	extractTitle,
-	extractVersionFromText,
-} from '../metadata-extractor'
+import { extractDateFromHtml, extractMetaTags, extractTitle, extractVersionFromText } from '../metadata-extractor'
 
 describe('metadata-extractor', () => {
 	it('extracts title from meta og:title or title tags or h1', () => {

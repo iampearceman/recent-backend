@@ -1,6 +1,8 @@
 import type { Context } from 'hono'
 import { Hono } from 'hono'
 import { ZodError } from 'zod'
+import { runPeriodicSync } from './app/jobs/cron-sync'
+import { processSyncMessage } from './app/jobs/queue-consumer'
 import { appRouter } from './app/routes/root-router'
 import { createErrorResponse } from './app/schemas/error-schema'
 import { createContext } from './app/trpc/context'
@@ -70,3 +72,11 @@ app.all(
 )
 
 export default app
+
+export async function queue(message: any, env: any, _ctx: any) {
+	await processSyncMessage(message, env)
+}
+
+export async function scheduled(_event: any, env: any, _ctx: any) {
+	await runPeriodicSync(env)
+}
